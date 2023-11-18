@@ -1,3 +1,9 @@
+import io.ConsolePrinter;
+import io.file.FileManager;
+import model.Country;
+
+import java.io.FileNotFoundException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -10,7 +16,20 @@ public class Main {
     }
 
     void run(Scanner scanner) {
-        // usupełnij metodę
+        ConsolePrinter printer = new ConsolePrinter();
+
+        try {
+            Map<String, Country> countries = FileManager.importCountries();
+            printer.printLine("Podaj kod kraju, o którym chcesz zobaczyć informacje:");
+            String countryCode = scanner.nextLine().toUpperCase();
+            printer.printCountryInfo(countryCode, findCountry(countryCode, countries));
+        } catch (FileNotFoundException | NumberFormatException e) {
+            printer.printLine(e.getMessage());
+        }
+    }
+
+    private Country findCountry(String countryCode, Map<String, Country> countries) {
+        return countries.get(countryCode);
     }
 
 }
